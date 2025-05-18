@@ -1,0 +1,24 @@
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./mount/influxdb/data:/var/lib/influxdb2
+      - ./mount/influxdb/config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=Colk-tech
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password
+      - DOCKER_INFLUXDB_INIT_ORG=Colk-tech
+      - DOCKER_INFLUXDB_INIT_BUCKET=default
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+      - "3030:3000"
+    volumes:
+      - ./mount/grafana/data:/var/lib/grafana
+    depends_on:
+      - influxdb
